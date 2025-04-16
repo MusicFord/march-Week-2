@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>byMusicF</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      text-align: center;
+      background: #222;
+      color: white;
+      font-family: Arial, sans-serif;
+    }
+    .gallery {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 20px;
+    }
+    .image-container {
+      position: relative;
+      width: 60%;
+      cursor: default;
+    }
+    .promo2-container {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+    }
+    .background-img {
+      width: 100%;
+      display: block;
+      border-radius: 10px;
+      transition: filter 0.3s ease-in-out;
+    }
+    .gif-overlay {
+      position: absolute;
+      width: auto;
+      height: auto;
+      max-width: 150%;
+      max-height: 150%;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(1.5);
+      display: block;
+      border-radius: 10px;
+      transition: filter 0.3s ease-in-out;
+    }
+    .background-img-first {
+      position: relative;
+      z-index: 2;
+    }
+    
+    /* Сильное размытие */
+    .blurred {
+      filter: blur(20px) brightness(50%);
+    }
+  </style>
+</head>
+<body>
+  <h2>made_by_MusicF</h2>
+  <div class="gallery" id="gallery">
+    <div class="image-container">
+      <img src="1.png" class="background-img background-img-first protected" alt="Фон 1">
+     
+    </div>
+  </div>
+
+  <script>
+    function applyBlur() {
+      document.querySelectorAll(".protected").forEach(img => {
+        img.classList.add("blurred");
+      });
+    }
+
+    function removeBlur() {
+      document.querySelectorAll(".protected").forEach(img => {
+        img.classList.remove("blurred");
+      });
+    }
+
+    // Размытие при потере фокуса окна
+    window.addEventListener("blur", applyBlur);
+    window.addEventListener("focus", removeBlur);
+
+    // Размытие при изменении размеров окна (подозрение на скриншот)
+    let lastWidth = window.innerWidth;
+    let lastHeight = window.innerHeight;
+
+    setInterval(() => {
+      if (window.innerWidth !== lastWidth || window.innerHeight !== lastHeight) {
+        applyBlur();
+      }
+      lastWidth = window.innerWidth;
+      lastHeight = window.innerHeight;
+    }, 100);
+
+    // Размытие при нажатии любой клавиши
+    document.addEventListener("keydown", applyBlur);
+
+    // Блокировка клавиш DevTools и PrintScreen
+    document.addEventListener("keydown", (e) => {
+      if (["F12", "PrintScreen"].includes(e.key) || 
+          (e.ctrlKey && e.shiftKey && ["I", "J"].includes(e.key)) || 
+          (e.ctrlKey && e.key === "U")) {
+        applyBlur();
+        e.preventDefault();
+      }
+    });
+
+    // Отключение правого клика
+    document.addEventListener("contextmenu", (e) => e.preventDefault());
+
+    // Отключение перетаскивания изображений
+    document.querySelectorAll("img").forEach(img => {
+      img.addEventListener("dragstart", (e) => e.preventDefault());
+    });
+
+  </script>
+</body>
+</html>
